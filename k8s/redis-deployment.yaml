@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cdcs-redis-deployment
+  name: wipp-registry-redis-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: cdcs-redis
+      component: wipp-registry-redis
   template:
     metadata:
       labels:
-        component: cdcs-redis
+        component: wipp-registry-redis
     spec:
       containers:
       - name: redis
@@ -22,5 +22,5 @@ spec:
         - name: REDIS_PASS
           valueFrom:
             secretKeyRef:
-              name: redis
+              name: wipp-registry-redis
               key: REDIS_PASS

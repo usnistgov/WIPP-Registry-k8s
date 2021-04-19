@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-database-pvc
+  name: wipp-registry-postgres-database-pvc
 spec:
   accessModes:
     - ReadWriteOnce

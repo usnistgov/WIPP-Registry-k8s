@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cdcs-superuser-configmap
+  name: wipp-registry-superuser-configmap
 data:
   createsuperuser.sh: |
     echo "Creating super user..."
@@ -10,7 +10,7 @@ data:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: cdcs-create-superuser
+  name: wipp-registry-create-superuser
 spec:
   template:
     spec:
@@ -20,16 +20,16 @@ spec:
         command: ['/bin/bash', '/srv/curator/createsuperuser.sh']
         envFrom:
         - secretRef:
-            name: cdcs-superuser
+            name: wipp-registry-superuser
         - secretRef:
-            name: cdcs
+            name: wipp-registry-cdcs
         volumeMounts:
-          - name: cdcs-superuser-config
+          - name: wipp-registry-superuser-config
             mountPath: /srv/curator/createsuperuser.sh
             subPath: createsuperuser.sh
       volumes:
-      - name: cdcs-superuser-config
+      - name: wipp-registry-superuser-config
         configMap:
-          name: cdcs-superuser-configmap
+          name: wipp-registry-superuser-configmap
       restartPolicy: Never
   backoffLimit: 4

@@ -1,0 +1,36 @@
+pipeline {
+    agent {
+        node { label 'aws && build && linux && ubuntu' }
+    }
+    parameters {
+        string(name: 'AWS_REGION', defaultValue: 'us-east-1', description: 'AWS Region to deploy')
+        string(name: 'KUBERNETES_CLUSTER_NAME', defaultValue: 'nci-polus-eks-cluster', description: 'Kubernetes cluster to deploy')
+    }
+    triggers {
+        pollSCM('H/2 * * * *')
+    }
+    stages {
+        stage('Checkout source code') {
+            steps {
+                cleanWs()
+                checkout scm
+            }
+        }
+        stage('Deploy WIPP to AWS CI') {
+            steps {
+                configFileProvider([configFile(fileId: 'env-nci', targetLocation: '.env')]) {
+                    withAWS(credentials:'nci-polus-deploy') {
+                        sh  '''
+                                aws --region ${AWS_REGION} eks update-kubeconfig --name ${KUBERNETES_CLUSTER_NAME}
+                                export \$(egrep -v '^#' .env)
+                                sed -i.bak -e "s/WIPP_REGISTRY_PROD_HOST_URL/${WIPP_REGISTRY_PROD_HOST_URL}/g" deploy/prod/nci/ingress.yaml
+                                ./deploy/deploy.sh
+                                kubectl apply --kubeconfig=${KUBECONFIG} -f deploy/prod/nci/nodeport.yaml
+                                kubectl apply --kubeconfig=${KUBECONFIG} -f deploy/prod/nci/ingress.yaml
+                            '''
+                    }
+                }
+            }
+        }
+    }
+}

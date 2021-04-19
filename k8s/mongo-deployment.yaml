@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cdcs-mongo-deployment
+  name: wipp-registry-mongo-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: cdcs-mongo
+      component: wipp-registry-mongo
   template:
     metadata:
       labels:
-        component: cdcs-mongo
+        component: wipp-registry-mongo
     spec:
       volumes:
         - name: mongo-storage
           persistentVolumeClaim:
-            claimName: mongo-database-pvc
+            claimName: wipp-registry-mongo-database-pvc
         - name: mongodb-scripts
           configMap:
-            name: cdcs-mongo-init-configmap
+            name: wipp-registry-cdcs-mongo-init-configmap
             items:
               - key: mongo-init.sh
                 path: mongo-init.sh
@@ -30,27 +30,27 @@ spec:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: wipp-registry-mongodb
               key: MONGO_INITDB_ROOT_USERNAME
         - name: MONGO_INITDB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: wipp-registry-mongodb
               key: MONGO_INITDB_ROOT_PASSWORD
         - name: MONGO_INITDB_DATABASE
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: wipp-registry-mongodb
               key: MONGO_INITDB_DATABASE
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: wipp-registry-mongodb
               key: MONGO_USER
         - name: MONGO_PASS
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: wipp-registry-mongodb
               key: MONGO_PASS
         volumeMounts:
         - mountPath: /data/db

@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cdcs-postgres-deployment
+  name: wipp-registry-postgres-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: cdcs-postgres
+      component: wipp-registry-postgres
   template:
     metadata:
       labels:
-        component: cdcs-postgres
+        component: wipp-registry-postgres
     spec:
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
-            claimName: postgres-database-pvc
+            claimName: wipp-registry-postgres-database-pvc
       containers:
         - name: postgres
           image: postgres:9.6
@@ -29,15 +29,15 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: postgres
+                  name: wipp-registry-postgres
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres
+                  name: wipp-registry-postgres
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: postgres
+                  name: wipp-registry-postgres
                   key: POSTGRES_DB

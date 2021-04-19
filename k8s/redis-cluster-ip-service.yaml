@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis-cluster-ip-service
+  name: wipp-registry-redis-cluster-ip-service
 spec:
   type: ClusterIP
   selector:
-    component: cdcs-redis
+    component: wipp-registry-redis
   ports:
     - port: 6379
       targetPort: 6379

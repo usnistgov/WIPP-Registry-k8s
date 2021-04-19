@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cdcs-django-deployment
+  name: wipp-registry-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: cdcs-django
+      component: wipp-registry
   template:
     metadata:
       labels:
-        component: cdcs-django
+        component: wipp-registry
     spec:
       containers:
       - image: wipp/wipp-registry:1.1.0
@@ -19,7 +19,7 @@ spec:
         args: ["nmrr"]
         envFrom:
         - secretRef:
-            name: cdcs
+            name: wipp-registry-cdcs
         ports:
         - containerPort: 8000
       restartPolicy: Always
