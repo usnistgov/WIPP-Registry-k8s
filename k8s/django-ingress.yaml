@@ -1,7 +1,9 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: django-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
 spec:
   tls:
     - hosts:
@@ -11,6 +13,10 @@ spec:
   - host: CDCS_HOSTNAME
     http:
       paths:
-      - backend:
-          serviceName: django-cluster-ip-service
-          servicePort: 8000
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: django-cluster-ip-service
+            port: 
+              number: 8000
