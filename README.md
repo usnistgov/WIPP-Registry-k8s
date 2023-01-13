@@ -141,7 +141,7 @@ them. Custom settings can be used to override default settings or add additional
         ```
         /srv/curator/nmrr/custom_settings.py
         ```
-    - set the `SETTINGS` variable to `custom_settings` to use the custom settings
+    - set the `SETTINGS` variable to `custom_settings` to use the custom settings, set the `DJANGO_SETTINGS_MODULE` variable to `nmrr.custom_settings`
 
 For more information about production deployment of a Django project,
 please check the [Deployment Checklist](https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/#deployment-checklist)
@@ -150,7 +150,6 @@ please check the [Deployment Checklist](https://docs.djangoproject.com/en/2.2/ho
 
 For SAML-based authentication:
 - uncomment and set `SAML_*` variables in `cdcs-secret` file
-- change the image in `django-deployment.yaml` from `wipp/wipp-registry:{version}` to `wipp/wipp-registry:{version}-saml` (e.g. `wipp/wipp-registry:1.1.0-saml`)
 
 More information about the SMAL2 configuration can be found in the [django-saml2-auth module](https://github.com/fangli/django-saml2-auth), sample configuration for Keycloak is provided in the `cdcs-secret-example` file.
 
